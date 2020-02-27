@@ -1,3 +1,4 @@
+// Edward Ayala
 #include <GL/glut.h>  // (or others, depending on the system in use)
 
 #include "Polyhedron.h"
