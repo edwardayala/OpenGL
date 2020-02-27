@@ -24,7 +24,7 @@ Maulin
 Tom
 
 TO BE IMPLEMENTED:
-* Bao Pham's collision code
-* Enkh Onon's pipes code
-* Joshua Chi's flappy bird code
+* Bao Pham's collision code         -DONE
+* Enkh Onon's pipes code            -DONE
+* Joshua Chi's flappy bird code     -In Progess
 * ...
