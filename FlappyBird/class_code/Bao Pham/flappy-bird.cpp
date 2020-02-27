@@ -1,3 +1,5 @@
+// Hi Edward, 
+// I'm Bao. I send to you my code for flappy bird. it detects the collision between the bird and pipes. when the bird hits pipes, the background color changes
 #include <GL/glut.h>
 #include <stdlib.h>
 #include <stdio.h>

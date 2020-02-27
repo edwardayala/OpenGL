@@ -6,7 +6,7 @@
 using namespace std;
 
 //======================================================
-// CONSTANTS 
+// CONSTANTS
 //======================================================
 // Square size
 #define size 50.0
@@ -182,6 +182,41 @@ void keyboardCallBack(unsigned char key, int x, int y)
   glutPostRedisplay();
 }
 
+bool collision = false;
+
+bool checkCollision()
+{
+    if (bird_x >= obj_x - 30 && bird_x <= obj_x + 50)       // If bird is between sides of pipes
+    {
+        if (bird_y <= obj_y - 115 || bird_y >= obj_y + 115) // Then check if bird is above or below the space between pipes 
+            collision = true;                               // Then bird hit a pipe
+    }
+    else collision = false;                                 // Else, no hit
+    return collision;
+}
+
+void DrawPipes()
+{
+    int left = obj_x - 40;
+    int right = obj_x + 40;
+    int top = obj_y + 125;
+    int bottom = obj_y - 125;
+
+        glBegin(GL_QUADS);
+        glVertex2f(left, top);
+        glVertex2f(left, top + w_height);
+        glVertex2f(right, top + w_height);
+        glVertex2f(right, top);
+        glEnd();
+        
+        glBegin(GL_QUADS);
+        glVertex2f(left, bottom);
+        glVertex2f(left, bottom - w_height);
+        glVertex2f(right, bottom - w_height);
+        glVertex2f(right, bottom);
+        glEnd();
+}
+
 void DrawEllipse(float cx, float cy, float rx, float ry, int num_segments) 
 { 
   float theta = 2 * 3.1415926 / float(num_segments); 
@@ -254,6 +289,13 @@ void displayCallBack(void)
   glColor3ub(255, 255, 0);
   DrawEllipse(3, 2, 3, 2, 20);
   DrawCircle(bird_r,20);
+  glPopMatrix();
+
+  // Draw pipes
+  glPushMatrix();
+  if (checkCollision()) glColor3f(1, 0, 0);   // If collision, change pipe color to red
+  else glColor3f(0, 1, 0);                    // Else, keep them green
+  DrawPipes();
   glPopMatrix();
 
   //draw obj
