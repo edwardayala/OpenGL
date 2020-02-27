@@ -22,3 +22,9 @@ Harindu
 Suvaik
 Maulin
 Tom
+
+TO BE IMPLEMENTED:
+* Bao Pham's collision code
+* Enkh Onon's pipes code
+* Joshua Chi's flappy bird code
+* ...
