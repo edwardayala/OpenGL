@@ -8,6 +8,8 @@ using namespace std;
 //======================================================
 // CONSTANTS
 //======================================================
+// Flappy
+float bird_y0;
 // PI
 long double const PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899863;
 // Square size
@@ -17,8 +19,8 @@ long double const PI = 3.1415926535897932384626433832795028841971693993751058209
 // GLOBAL VARIABLES WRITTEN TO BY reshapeCallBack( )
 //======================================================
 // Window size
-int w_height = 800;
-int w_width = 800;
+int w_height = 500;
+int w_width = 500;
 
 //======================================================
 // GLOBAL VARIABLES WRITTEN TO BY displayCallBack( )
@@ -75,8 +77,123 @@ void boundImpulse() {
   if(impulse < 0.5) impulse = 0;
 }
 
+//Implemeted Coords for background scene
+//Used Polygons to represnt each graphic
+void background() {
+  //Sky
+  glBegin(GL_POLYGON);
+  glColor3f(0.3, .9, 1);
+  glVertex2f(w_width * -1, w_height);
+  glVertex2f(w_width, w_height);
+  glVertex2f(w_width,w_height * -1);
+  glVertex2f(w_width * -1, w_height * -1);
+  glEnd();
+   
+  //sidewalk
+  glBegin(GL_POLYGON);
+  glColor3f(1, 1, 0.7);
+  glVertex2f(w_width * -1, 75);
+  glVertex2f(w_width, 75);
+  glVertex2f(w_width,0);
+  glVertex2f(w_width * -1, 0);
+  glEnd();
+      
+  //grass
+  glBegin(GL_POLYGON);
+  glColor3f(0, 1, 0.5);
+  glVertex2f(w_width * -1, 75);
+  glVertex2f(w_width, 75);
+  glVertex2f(w_width,50);
+  glVertex2f(w_width * -1, 50);
+  glEnd();
+  //clouds
+  //1
+  glBegin(GL_POLYGON);
+  glColor3f(1, 1, 1);
+  glVertex2f(0, 150);
+  glVertex2f(50, 250);
+  glVertex2f(75,200);
+  glVertex2f(250, 200);
+  glEnd();
+
+  //2
+  glBegin(GL_POLYGON);
+  glColor3f(1, 1, 1);
+  glVertex2f(0, 270);
+  glVertex2f(250, 300);
+  glVertex2f(275,270);
+  glVertex2f(450, 300);
+  glEnd();  
+  glFlush();
+}
+    
+//Tries to for circular shapes as windows for testing purposes.
+void trees(){ 
+  for (double i =0; i <=360; i++){
+    glBegin(GL_POLYGON);
+    glVertex3f(2.0 * cos(i),2* sin(i), 1.0);
+    glVertex3f(2.0 * cos(i+1),2* sin(i+1), 2.0);
+    glVertex3f(2.0 * cos(i),2* sin(i), 2.0);
+    glVertex3f(2.0 *cos(i+1),2* sin(i+1), 1.0);
+    glEnd();
+  }
+}
+//Buildings() displays buildings in different colors widths and heights.
+void Buildings(){       
+  ///One -red tri shap
+  glColor3f(1, 0, 0);
+  glPushMatrix();  
+  glBegin(GL_POLYGON);
+  glVertex2i(200,75);
+  glVertex2i(200, 200);
+  glVertex2i(100, 75);
+  glVertex2i(100, 200);
+  glEnd();
+  glPopMatrix();
+
+  ///purplish
+  glPushMatrix();
+  glColor3f(0.9, 0, 0.7);
+  glBegin(GL_POLYGON);
+  glVertex2i(445, 75);
+  glVertex2i(445, 200);
+  glVertex2i(350, 200);
+  glVertex2i(350, 75);
+  glEnd();
+  glPopMatrix();
+  
+  //yellowish
+  glPushMatrix();
+  glColor3f(0.8, 1, 0);
+  glBegin(GL_POLYGON);
+  glVertex2i(245, 75);
+  glVertex2i(245, 170);
+  glVertex2i(320, 170);
+  glVertex2i(320, 75);
+  glEnd();
+  glPopMatrix();
+  
+  //black building
+  glPushMatrix();
+  glColor3f(0, 0.2, 0);
+  glBegin(GL_POLYGON);
+  glVertex2i(300, 75);
+  glVertex2i(300, 300);
+  glVertex2i(320, 300);
+  glVertex2i(360, 250);
+  glVertex2i(360, 75);  
+  glEnd();
+  glPopMatrix();
+}
+    
+void DrawBackground(){
+  background();
+  Buildings();
+}
+
 void update()
 {
+  bird_y0 = bird_y;
   numUpdates++;
   if(numUpdates%100==0) cout << "Num updates = " << numUpdates << "bird_x = " << bird_x << " bird_y = " << bird_y << " vx = " << bird_vx << " vy = " << bird_vy << " ax = " << bird_ax << " ay = " << bird_ay << endl;
   if(hasStarted) {
@@ -206,19 +323,59 @@ void keyboardCallBack(unsigned char key, int x, int y)
   glutPostRedisplay();
 }
 
-void DrawEllipse(float cx, float cy, float rx, float ry, int num_segments) 
-{ 
-  float theta = 2 * 3.1415926 / float(num_segments); 
+void DrawEllipse(float cx, float cy, float rx, float ry, int num_segments)
+{
+  float theta = 2 * 3.1415926 / float(num_segments);
   float c = cos(theta);//precalculate the sine and cosine
   float s = sin(theta);
   float t;
 
   float x = 10;//we start at angle = 0 
-  float y = 0; 
+  float y = 0;
 
-  glBegin(GL_LINE_LOOP); 
-  for(int ii = 0; ii < num_segments; ii++) 
-  { 
+  glBegin(GL_POLYGON);
+  for (int ii = 0; ii < num_segments + 3; ii++)
+  {
+    if (ii == 12)
+    {
+      glEnd();
+
+      glColor3ub(249, 194, 44);
+      glBegin(GL_POLYGON);
+      glVertex2f(x * rx + cx, y * ry + cy);
+    }
+    else if (ii == 11)
+    {
+      //apply radius and offset
+      glVertex2f(x * rx + cx, y * ry + cy);//output vertex 
+    }
+    else
+    {
+      //apply radius and offset
+      glVertex2f(x * rx + cx, y * ry + cy);//output vertex 
+
+      //apply the rotation matrix
+      t = x;
+      x = c * x - s * y;
+      y = s * t + c * y;
+    }
+  }
+  glEnd();
+}
+
+void DrawBorder(float cx, float cy, float rx, float ry, int num_segments)
+{
+  float theta = 2 * 3.1415926 / float(num_segments);
+  float c = cos(theta);//precalculate the sine and cosine
+  float s = sin(theta);
+  float t;
+
+  float x = 10;//we start at angle = 0 
+  float y = 0;
+
+  glBegin(GL_LINE_STRIP);
+  for (int ii = 0; ii < num_segments; ii++)
+  {
     //apply radius and offset
     glVertex2f(x * rx + cx, y * ry + cy);//output vertex 
 
@@ -226,22 +383,124 @@ void DrawEllipse(float cx, float cy, float rx, float ry, int num_segments)
     t = x;
     x = c * x - s * y;
     y = s * t + c * y;
-  } 
-  glEnd(); 
-}
-
-void DrawCircle(float r, int num_segments) {
-  float theta = 2 * 3.1415926 / float(num_segments); 
-  glBegin(GL_POLYGON);
-  for(int ii=0; ii<num_segments; ii++) {
-    float xi = r * cos( (theta*ii) );
-    float yi = r * sin( (theta*ii) );
-    glVertex2f(xi,yi);
   }
-  glEnd(); 
+  glEnd();
 }
 
-void drawPipe(float r)
+void DrawEye(float r, int num_segments) {
+  float theta = 2 * 3.1415926 / float(num_segments);
+  glBegin(GL_POLYGON);
+  for (int ii = 0; ii < num_segments; ii++) {
+    float xi = r * cos((theta * ii)) + 15.0f;
+    float yi = r * sin((theta * ii)) + 5.0f;
+    glVertex2f(xi, yi);
+  }
+  glEnd();
+}
+
+void DrawPupil()
+{
+  glBegin(GL_QUADS);
+  glVertex2f(22, 12);
+  glVertex2f(22, 4);
+  glVertex2f(18, 4);
+  glVertex2f(18, 12);
+  glEnd();
+}
+
+void DrawLips()
+{
+  glColor3f(0, 0, 0);
+  glBegin(GL_QUADS);
+  glVertex2f(9, -3);
+  glVertex2f(9, 0);
+  glVertex2f(33, 0);
+  glVertex2f(33, -3);
+  glEnd();
+
+  glColor3ub(253, 104, 75);
+  glBegin(GL_QUADS);
+  glVertex2f(9, -3);
+  glVertex2f(9, -6);
+  glVertex2f(33, -6);
+  glVertex2f(33, -3);
+  glEnd();
+
+  glColor3f(0, 0, 0);
+  glBegin(GL_QUADS);
+  glVertex2f(9, -6);
+  glVertex2f(9, -9);
+  glVertex2f(33, -9);
+  glVertex2f(33, -6);
+  glEnd();
+
+  glColor3f(0, 0, 0);
+  glBegin(GL_QUADS);
+  glVertex2f(9, -3);
+  glVertex2f(9, -12);
+  glVertex2f(6, -12);
+  glVertex2f(6, -3);
+  glEnd();
+
+  glColor3ub(253, 104, 75);
+  glBegin(GL_QUADS);
+  glVertex2f(9, -6);
+  glVertex2f(9, -9);
+  glVertex2f(6, -9);
+  glVertex2f(6, -6);
+  glEnd();
+
+  glColor3f(0, 0, 0);
+  glBegin(GL_QUADS);
+  glVertex2f(3, -6);
+  glVertex2f(3, -9);
+  glVertex2f(6, -9);
+  glVertex2f(6, -6);
+  glEnd();
+
+  glColor3ub(253, 104, 75);
+  glBegin(GL_QUADS);
+  glVertex2f(9, -12);
+  glVertex2f(9, -9);
+  glVertex2f(30, -9);
+  glVertex2f(30, -12);
+  glEnd();
+
+  glColor3f(0, 0, 0);
+  glBegin(GL_QUADS);
+  glVertex2f(9, -12);
+  glVertex2f(9, -15);
+  glVertex2f(30, -15);
+  glVertex2f(30, -12);
+  glEnd();
+}
+
+void DrawWing(float cx, float cy, float rx, float ry, int num_segments)
+{
+  float theta = 2 * 3.1415926 / float(num_segments);
+  float c = cos(theta);//precalculate the sine and cosine
+  float s = sin(theta);
+  float t;
+
+  float x = 10;//we start at angle = 0 
+  float y = 0;
+
+  glBegin(GL_POLYGON);
+  for (int ii = 0; ii < num_segments + 3; ii++)
+  {
+    //apply radius and offset
+    glVertex2f(x * rx + cx, y * ry + cy);//output vertex 
+
+    //apply the rotation matrix
+    t = x;
+    x = c * x - s * y;
+    y = s * t + c * y;
+  }
+  glEnd();
+  //glRotatef(-30, 0, 0, 1);
+}
+
+void DrawPipe(float r)
 {
   	glColor3f(0, 1, 0);
 	//Pipes
@@ -304,35 +563,63 @@ void displayCallBack(void)
     glOrtho(bird_x-w_width/2, bird_x+w_width/2, 0.0, w_height, -1.0, 1.0);
   }
 
-  // glClearColor(0.0, 0.0, 0.0, 1.0);
+  glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+
+  //draw background, the background should be drawn before drawing bird
+	glPushMatrix();
+	glTranslatef(bird_x - 250, 0, 0.0); // make it move to the x position of the bird, y doesnt change
+	glRotatef(theta, 0, 0, 1.0);  //the program always draw the bird at bird_x, because of line 256. So all you need to do is let the background drawn at bird_x too
+	glColor3ub(255, 255, 0);
+	DrawBackground(); //just a simple background
+	glPopMatrix();
+	//end of drawing background
+  
   //draw bird
   glPushMatrix();
   glTranslatef(bird_x, bird_y, 0.0);
   glRotatef(theta, 0, 0, 1.0);
+  
+  glColor3ub(249, 241, 36);
+  DrawEllipse(3, 2, 2.5f, 2, 20);
 
-  /*glBegin(GL_POLYGON);
-  glColor3ub(255, 255, 0);
-  glVertex2f(size, size);
-  glVertex2f(-size, size);
-  glVertex2f(-size, -size);
-  glVertex2f(+size, -size);
-  glEnd();
-  */
-  glColor3ub(255, 255, 0);
-  DrawEllipse(3, 2, 3, 2, 20);
-  DrawCircle(bird_r,20);
+  glColor3f(0, 0, 0);
+  DrawBorder(3, 2, 2.5f, 2, 20);
+
+  glColor3f(1, 1, 1);
+  DrawEye(bird_r, 20);
+
+  glColor3f(0, 0, 0);
+  DrawPupil();
+
+  DrawLips();
+
+  if (bird_y - bird_y0 - 1 > 0.0f)
+  {
+    glRotatef(30, 0, 0, 1);
+    glTranslatef(1, 9, 0);
+    glColor3ub(250, 252, 233);
+    DrawWing(-15, -3, 1.2f, 1.f, 20);
+  }
+  else
+  {
+    glRotatef(-30, 0, 0, 1);
+    glColor3ub(250, 252, 233);
+    DrawWing(-15, -3, 1.2f, 1.f, 20);
+  }
+
   glPopMatrix();
+
 
   //draw obj
   glPushMatrix();
   glTranslatef(obj_x, obj_y, 0.0);
   glColor3f(0, 1, 0);
   // DrawCircle(bird_r,20);
-  drawPipe(bird_r);
+  DrawPipe(bird_r);
   glPopMatrix();
 
   //Swap double buffers 

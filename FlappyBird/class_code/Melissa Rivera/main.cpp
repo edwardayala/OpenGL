@@ -63,7 +63,7 @@ double impulse = 0;
 
 double bg_ax = 0;
 double bg_ay = 0;
-int bg_dx = 5; // incremental change inbird_x
+int bg_dx = 5; // incremental change background
 float bgdt = 0.15; //0.05;
 double bgimpulse = 0;
 
@@ -253,8 +253,12 @@ void Buildings(){
     glPopMatrix();
     
     
-    }
+}
     
+void DrawBackground(){
+  background();
+  Buildings();
+}
 
 
 
@@ -396,7 +400,8 @@ void DrawEllipse(float cx, float cy, float rx, float ry, int num_segments)
   glEnd();
 }
 
-void DrawCircle(float r, int num_segments) {
+void DrawCircle(float r, int num_segments) 
+{
   float theta = 2 * 3.1415926 / float(num_segments);
   glBegin(GL_POLYGON);
   for(int ii=0; ii<num_segments; ii++) {
@@ -429,6 +434,16 @@ void displayCallBack(void)
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+
+  //draw background, the background should be drawn before drawing bird
+	glPushMatrix();
+	glTranslatef(bird_x - 250, 0, 0.0); // make it move to the x position of the bird, y doesnt change
+	glRotatef(theta, 0, 0, 1.0);  //the program always draw the bird at bird_x, because of line 256. So all you need to do is let the background drawn at bird_x too
+	glColor3ub(255, 255, 0);
+	DrawBackground(); //just a simple background
+	glPopMatrix();
+	//end of drawing background
+
   //draw bird
   glPushMatrix();
   glTranslatef(bird_x, bird_y, 0.0);
@@ -450,25 +465,10 @@ void displayCallBack(void)
 
   //draw obj
   glPushMatrix();//When you call glPushMatrix you are pushing a copy of the current matrix on top of the current matrix stack; if it succeeds* there will be identical matrices at the top and just below the top of the current stack.
-  glTranslatef(obj_x, obj_y, 0.0);
+  glTranslatef(bird_ax, 0.0, 0.0);
   glColor3f(0, 1, 0);
-  //DrawCircle(bird_r,20);
-// background();
-    glColor3ub(0, 0, 250);
-    
- 
-     glPopMatrix();
-
-     //draw obj
-     glPushMatrix();
-  
-    glTranslatef(0, 0, 0.0);
-   
-  background(); // this is the grass
-    
-  Buildings();
-  
-  glPopMatrix();// PopMatrix copies the top of the matrix into the current matrix.
+  glColor3ub(0, 0, 250); 
+  glPopMatrix();
 
   //Swap double buffers
   glutSwapBuffers();

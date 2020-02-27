@@ -11,3 +11,6 @@ run:
 
 clean:
 	rm *.o flappy
+
+clear:
+	rm *.o

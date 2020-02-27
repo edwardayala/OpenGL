@@ -14,6 +14,7 @@ Joshua Chi GOOD FLAPPY / HUGE EYEBALL??
 
 BACKGROUND
 Braxton Brown - NOT FLAPPYBIRD BACKGOUND???
+Melissa Rivera - NICE BACKGROUND
 
 MISSING
 Michelle
@@ -21,7 +22,6 @@ Hongbi
 Harindu
 Suvaik
 Maulin
-Tom
 
 TO BE IMPLEMENTED:
 * Bao Pham's collision code         -DONE
@@ -29,3 +29,8 @@ TO BE IMPLEMENTED:
 * Enkh Onon's pipes code            -DONE
 * Joshua Chi's flappy bird code     -In Progess
 * ...
+
+Changes made by me:
+BACKGROUND:
+I editing Melissa's code so that the backgound sky & ground will
+work when the window is resized.
