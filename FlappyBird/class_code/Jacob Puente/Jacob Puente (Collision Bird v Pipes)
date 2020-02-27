@@ -1,0 +1,54 @@
+Jacob Puente
+Collision (Bird v Pipes)
+
+
+Description of my code:
+I added a Collision boolean variable set to false, so that when the DisplayCallBack checks for a collision it will set it to true. 
+My checkCollision function uses a nested if statement to first check if Flappy is currently passing through pipes (x axis) and then it checks if Flappy is not within the space between pipes (y axis)--signifying a collision. The boolean "collision" is then updated and returned. If collision occured, the pipes turn red.
+
+
+Below is the code I added to flappy.cpp
+
+bool collision = false;
+
+bool checkCollision()
+{
+    if (bird_x >= obj_x - 30 && bird_x <= obj_x + 50)       // If bird is between sides of pipes
+    {
+        if (bird_y <= obj_y - 115 || bird_y >= obj_y + 115) // Then check if bird is above or below the space between pipes 
+            collision = true;                               // Then bird hit a pipe
+    }
+    else collision = false;                                 // Else, no hit
+    return collision;
+}
+
+void DrawPipes()
+{
+    int left = obj_x - 40;
+    int right = obj_x + 40;
+    int top = obj_y + 125;
+    int bottom = obj_y - 125;
+
+        glBegin(GL_QUADS);
+        glVertex2f(left, top);
+        glVertex2f(left, top + w_height);
+        glVertex2f(right, top + w_height);
+        glVertex2f(right, top);
+        glEnd();
+        
+        glBegin(GL_QUADS);
+        glVertex2f(left, bottom);
+        glVertex2f(left, bottom - w_height);
+        glVertex2f(right, bottom - w_height);
+        glVertex2f(right, bottom);
+        glEnd();
+}
+
+// within displayCallBack function, I added the code below
+
+    // Draw pipes
+    glPushMatrix();
+    if (checkCollision()) glColor3f(1, 0, 0);   // If collision, change pipe color to red
+    else glColor3f(0, 1, 0);                    // Else, keep them green
+    DrawPipes();
+    glPopMatrix();

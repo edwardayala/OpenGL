@@ -1,0 +1,48 @@
+void DrawCircle(float r, int num_segments) {
+	glColor3f(0, 1, 0);
+	//Pipes
+	glBegin(GL_QUADS);
+		glVertex2f(r, r - 200);
+		glVertex2f(r + 50, r - 200);
+		glVertex2f(r + 50, r - 4200);
+		glVertex2f(r, r - 4200);
+	glEnd();
+	glBegin(GL_QUADS);
+		glVertex2f(r, r + 200);
+		glVertex2f(r + 50, r + 200);
+		glVertex2f(r + 50, r + 4200);
+		glVertex2f(r, r + 4200);
+	glEnd();
+
+	//Tip
+	glBegin(GL_QUADS);
+		glVertex2f(r - 10, r - 200);
+		glVertex2f(r + 60, r - 200);
+		glVertex2f(r + 60, r - 220);
+		glVertex2f(r - 10, r - 220);
+	glEnd();
+	glBegin(GL_QUADS);
+		glVertex2f(r - 10, r + 200);
+		glVertex2f(r + 60, r + 200);
+		glVertex2f(r + 60, r + 220);
+		glVertex2f(r - 10, r + 220);
+	glEnd();
+
+	//Black Outline
+	glColor3f(0.01, 0.01, 0.01);
+	glBegin(GL_QUADS);
+		glVertex2f(r - 10, r - 220);
+		glVertex2f(r + 60, r - 220);
+		glVertex2f(r + 60, r - 225);
+		glVertex2f(r - 10, r - 225);
+	glEnd();
+	glBegin(GL_QUADS);
+		glVertex2f(r - 10, r + 220);
+		glVertex2f(r + 60, r + 220);
+		glVertex2f(r + 60, r + 225);
+		glVertex2f(r - 10, r + 225);
+	glEnd();
+}
+
+Very simple code, just draw 6 quads and leave 400 space left for the bird to fly through, it was made by modifiyng drawCircle()
+Tried getting textures to work but it is harder than I thought. I honestly don't know what more I can add do the report, it's very simple.

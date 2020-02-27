@@ -1,0 +1,137 @@
+// GLOBAL VARIABLES WRITTEN TO BY motionCallBack( )
+//====================================================================
+int bird_r = 20;
+float bird_x = 40;
+float bird_y = 40;; // position of bird
+double bird_vx = 0;
+double bird_vy = 0;
+double bird_ax = 0;
+double bird_ay = 0;
+int bird_dx = 1; // incremental change inbird_x
+float dt = 0.15; //0.05;
+double impulse = 0;
+double impulseMax = 80;
+double vyMax = 40;
+double vxMax = 40;
+int counts = 0; //--------------------------------------------------------------this is the one I added
+
+void scoredisplay(int posx, int posy, int posz, int space_char, int scorevar)
+{
+    int j = 0, p, k;
+    GLvoid* font_style1 = GLUT_BITMAP_TIMES_ROMAN_24;
+
+    p = scorevar;
+    j = 0;
+    k = 0;
+    while (p > 9)
+    {
+        k = p % 10;
+        glRasterPos3f((posx - (j * space_char)), posy, posz);
+        glutBitmapCharacter(font_style1, 48 + k);
+        j++;
+        p /= 10;
+    }
+    glRasterPos3f((posx - (j * space_char)), posy, posz);
+    glutBitmapCharacter(font_style1, 48 + p);
+
+}
+
+
+void update()
+{
+    numUpdates++;
+    if (numUpdates % 100 == 0) cout << "Num updates = " << numUpdates << "bird_x = " << bird_x << " bird_y = " << bird_y << " vx = " << bird_vx << " vy = " << bird_vy << " ax = " << bird_ax << " ay = " << bird_ay << endl;
+    if (hasStarted) {
+        //acceleration gets updated
+        bird_ay += (-9.8 + impulse) * dt;
+        //velocity gets updated
+        bird_vx += bird_ax * dt;
+        bird_vy += bird_ay * dt;
+        //position gets updated
+        bird_x += bird_vx * dt;
+        bird_y += bird_vy * dt;
+        boundVelocityAcceleration(bird_vx, bird_vy, bird_ax, bird_ay);
+        impulse *= 0.3;
+        boundImpulse();
+    }
+    /*
+    bird_x += bird_dx; //Increment x-position of bird
+    if (bird_x > w_width || bird_x == 0) bird_dx *= -1; //Reverse direction if at edges
+      */
+    if (bird_y - bird_r < 0) {
+        bird_y = bird_r;
+        bird_vy = 0;
+        bird_ay = 0;
+    }
+
+
+    if(obj_x < (bird_x - w_width / 2.0)) {
+        //random x
+        obj_x = bird_x + w_width / 2.0 + (100.0 * rand()) / RAND_MAX;
+        //random y
+        obj_y = (rand()) % w_height;
+        counts++; //---------------------------------------------this is where I'm calling it in the update function
+    }
+
+
+    glutPostRedisplay();
+}
+
+
+void displayCallBack(void)
+{
+    printf("Display call back %d\n", display_count++);
+    cout << "pos of bird [" << bird_x << "," << bird_y << "]" << endl;
+
+    if (bird_x > w_width / 2) {
+        // Set Projection Mode and Volume
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        //glOrtho(0.0, w_width, 0.0, w_height, -1.0, 1.0);
+        glOrtho(bird_x - w_width / 2, bird_x + w_width / 2, 0.0, w_height, -1.0, 1.0);
+    }
+
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    //draw bird
+    glPushMatrix();
+    glTranslatef(bird_x, bird_y, 0.0);
+    glRotatef(theta, 0, 0, 1.0);
+
+    /*glBegin(GL_POLYGON);
+    glColor3ub(255, 255, 0);
+    glVertex2f(size, size);
+    glVertex2f(-size, size);
+    glVertex2f(-size, -size);
+    glVertex2f(+size, -size);
+    glEnd();
+    */
+    glColor3ub(255, 255, 0);
+    DrawEllipse(3, 2, 3, 2, 20);
+    DrawCircle(bird_r, 20);
+    glPopMatrix();
+
+    //draw obj
+    glPushMatrix();
+    glTranslatef(obj_x, obj_y, 0.0);
+    if (obj_x < 20000.0) {//-------------------------------------Hi Edward
+        glColor3f(0, 1, 0);
+    }
+    else
+        glColor3f(1, 0.65, 0);//--------------------------------------------
+    DrawCircle(bird_r, 20);
+
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(bird_x - 200, 0.0, 0.0);
+    glColor3f(1, 1, 1);
+    scoredisplay(250, 500, 0, 20, counts);//-----------------------------I'm trying to make this obivous for ya
+    glPopMatrix();
+
+    //Swap double buffers 
+    glutSwapBuffers();
+}
