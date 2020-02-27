@@ -43,7 +43,6 @@ void Polyhedron::Recenter() {
   }
   
 
-  glTranslated(0,0,0);
 }
 
 void Polyhedron::RecenterXZ() {
