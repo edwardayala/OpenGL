@@ -288,7 +288,7 @@ void displayCallBack(void)
   */
   glColor3ub(255, 255, 0);
   DrawEllipse(3, 2, 3, 2, 20);
-  DrawCircle(bird_r,20);
+  // DrawCircle(bird_r,20);
   glPopMatrix();
 
   // Draw pipes

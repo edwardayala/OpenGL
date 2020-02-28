@@ -1,8 +1,10 @@
+#define GL_SILENCE_DEPRECATION
 #include <GL/glut.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
 #include <math.h>
+
 using namespace std;
 
 //======================================================
@@ -191,13 +193,22 @@ void DrawBackground(){
   Buildings();
 }
 
+void DrawCollision(){
+  glBegin(GL_QUADS);
+  glVertex2d(w_width / 2 - (w_width / 5), w_height - (w_height / 8));
+  glVertex2d(w_width / 2 - (w_width / 8), w_height - (w_height / 8));
+  glVertex2d(w_width / 2 + (w_width / 5), w_height - (w_height / 2 + w_height / 5));
+  glVertex2d(w_width / 2 + (w_width / 8), w_height - (w_height / 2 + w_height / 5));
+  glEnd();
+}
+
 void update()
 {
   bird_y0 = bird_y;
   numUpdates++;
   if(numUpdates%100==0) cout << "Num updates = " << numUpdates << "bird_x = " << bird_x << " bird_y = " << bird_y << " vx = " << bird_vx << " vy = " << bird_vy << " ax = " << bird_ax << " ay = " << bird_ay << endl;
   if(hasStarted) {
-    //acceleration gets updated
+    //acceleration gets updated  
     bird_ay += (-9.8 + impulse ) * dt;
     //velocity gets updated
     bird_vx += bird_ax * dt;
@@ -325,13 +336,6 @@ void keyboardCallBack(unsigned char key, int x, int y)
 //======================================================
 // SHAPES AND OBJECTS 
 //======================================================
-void DrawCollision(){
-  glBegin(GL_QUADS);
-  glVertex2d(w_width / 2 - (w_width / 5), w_height - (w_height/8));
-  glVertex2d(w_width / 2 - (w_width / 8), w_height - (w_height/8));
-  glVertex2d(w_width / 2 + (w_width / 5), w_height - (w_height/8));
-
-}
 void DrawEllipse(float cx, float cy, float rx, float ry, int num_segments)
 {
   float theta = 2 * 3.1415926 / float(num_segments);
