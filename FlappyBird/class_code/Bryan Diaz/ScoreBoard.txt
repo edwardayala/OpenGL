@@ -33,7 +33,6 @@ void scoredisplay(int posx, int posy, int posz, int space_char, int scorevar)
     }
     glRasterPos3f((posx - (j * space_char)), posy, posz);
     glutBitmapCharacter(font_style1, 48 + p);
-
 }
 
 

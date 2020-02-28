@@ -16,6 +16,9 @@ BACKGROUND
 Braxton Brown - NOT FLAPPYBIRD BACKGOUND???
 Melissa Rivera - NICE BACKGROUND
 
+SCROREBOARD
+Bryan Diaz - GOOD
+
 MISSING
 Michelle
 Hongbi
@@ -27,10 +30,13 @@ TO BE IMPLEMENTED:
 * Bao Pham's collision code         -DONE
     * (If background gets added, will use Jacob Puente's collision code) -DONE
 * Enkh Onon's pipes code            -DONE
+* Melissa Rivera's background code  -DONE
 * Joshua Chi's flappy bird code     -DONE
-* ...
+* Bryan Diaz's scoreboard code      -DONE
 
 Changes made by me:
 BACKGROUND:
 * I edited Melissa's code so that the backgound sky & ground will work when the window is resized.
-* I mixed Jacob Puente's pipe with Enkh Onon's pipe code to make new pipes
+* I merged Jacob Puente's pipe with Enkh Onon's pipe code to make new pipes
+* I merged Jacob Puente's collision code with Bryan Diaz's scoreboard code for colors
+* I attepted to add a lose screen - when flappy hits pipe, a big X will appear on screen - not working

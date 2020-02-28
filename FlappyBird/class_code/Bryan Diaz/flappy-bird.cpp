@@ -783,12 +783,13 @@ void displayCallBack(void)
   // Draw pipes - Mix of Jacob Puente's & Enkh Onon's Code
   glPushMatrix();
   if (checkCollision()) glColor3d(1,0,0); 
-  else if (obj_x < 20000.0) glColor3d(0,1,0);
+  else glColor3f(0, 1, 0);                    // Else, keep them green
+  if (obj_x < 20000.0) glColor3d(0,1,0);
   else glColor3d(1, 0.65, 0);
   DrawPipes();
   glPopMatrix();
 
-  if (checkCollision()){    // NOT WORKING
+  if (checkCollision()){
     // glPushMatrix();
     printf("COLLISION\n");
     DrawCollision();
