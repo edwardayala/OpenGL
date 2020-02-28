@@ -277,18 +277,9 @@ void displayCallBack(void)
   glPushMatrix();
   glTranslatef(bird_x, bird_y, 0.0);
   glRotatef(theta, 0, 0, 1.0);
-
-  /*glBegin(GL_POLYGON);
-  glColor3ub(255, 255, 0);
-  glVertex2f(size, size);
-  glVertex2f(-size, size);
-  glVertex2f(-size, -size);
-  glVertex2f(+size, -size);
-  glEnd();
-  */
   glColor3ub(255, 255, 0);
   DrawEllipse(3, 2, 3, 2, 20);
-  // DrawCircle(bird_r,20);
+  DrawCircle(bird_r,20);
   glPopMatrix();
 
   // Draw pipes
@@ -299,12 +290,11 @@ void displayCallBack(void)
   glPopMatrix();
 
   //draw obj
-  glPushMatrix();
-  glTranslatef(obj_x, obj_y, 0.0);
-  glColor3f(0, 1, 0);
-  DrawCircle(bird_r,20);
-
-  glPopMatrix();
+  // glPushMatrix();
+  // glTranslatef(obj_x, obj_y, 0.0);
+  // glColor3f(0, 1, 0);
+  // DrawCircle(bird_r,20);
+  // glPopMatrix();
 
   //Swap double buffers 
   glutSwapBuffers();

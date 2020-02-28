@@ -75,8 +75,7 @@ void boundImpulse() {
     if (impulse < 0.5) impulse = 0;
 }
 
-void update()
-{
+void update(){
     numUpdates++;
     if (numUpdates % 100 == 0) cout << "Num updates = " << numUpdates << "bird_x = " << bird_x << " bird_y = " << bird_y << " vx = " << bird_vx << " vy = " << bird_vy << " ax = " << bird_ax << " ay = " << bird_ay << endl;
     if (hasStarted) {
@@ -115,8 +114,7 @@ void update()
 //======================================================
 // RESHAPE CALLBACK ROUTINE
 //======================================================
-void reshapeCallback(int width, int height)
-{
+void reshapeCallback(int width, int height){
     //Update globals containing window size
     w_width = width;
     w_height = height;
@@ -125,8 +123,7 @@ void reshapeCallback(int width, int height)
 //======================================================
 // MOUSE MOTION CALLBACK ROUTINE 
 //======================================================
-void motionCallBack(int x, int y)
-{
+void motionCallBack(int x, int y){
     printf("YYYMotion call back: %d, %d)\n", x, y);
     //Set bird's location to current mouse position
     bird_x = x;
@@ -138,8 +135,7 @@ void motionCallBack(int x, int y)
 //======================================================
 // MOUSE CALLBACK ROUTINE 
 //======================================================
-void mouseCallBack(int btn, int state, int x, int y)
-{
+void mouseCallBack(int btn, int state, int x, int y){
     printf("Mouse call back: button=%d, state=%d, x=%d, y=%d\n", btn, state, x, y);
     if (btn == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)   exit(0);
 }
@@ -148,8 +144,7 @@ void mouseCallBack(int btn, int state, int x, int y)
 // KEYBOARD CALLBACK ROUTINE 
 //======================================================
 bool isSimulating = false;
-void keyboardCallBack(unsigned char key, int x, int y)
-{
+void keyboardCallBack(unsigned char key, int x, int y){
     printf("Keyboard call back: key=%c, x=%d, y=%d, theta=%f\n", key, x, y, theta);
     switch (key)
     {
@@ -185,8 +180,7 @@ void keyboardCallBack(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
-void DrawEllipse(float cx, float cy, float rx, float ry, int num_segments)
-{
+void DrawEllipse(float cx, float cy, float rx, float ry, int num_segments){
     float theta = 2 * 3.1415926 / float(num_segments);
     float c = cos(theta);//precalculate the sine and cosine
     float s = sin(theta);
@@ -277,38 +271,27 @@ void displayCallBack(void)
 
     //draw bird
     glPushMatrix();
-
     glTranslatef(bird_x, bird_y, 0.0);
     glRotatef(theta, 0, 0, 1.0);
-
-
     glColor3ub(0, 200, 255); //Changed to light blue
     DrawEllipse(7, 4, 7, 4, 40);
-
     glTranslatef(30.0, 30.0, 0.0);
     DrawCircle(bird_r, 30); //Draw head
-
-    
     glTranslatef(-30.0, -20.0, 0.0);
     glColor3ub(0, 175, 255);
     Draw_Wings(); //Draw Flappy's wings
-
     glTranslatef(40.0, 32.0, 0.0);
     glColor3ub(255, 255, 255); //White
     DrawCircle(Eye_radius, 20); 
-
     glTranslatef(0.0, 1.5, 0.0);
     glColor3ub(0, 0, 0); //Black
     DrawCircle(Eye_pupil, 20);
-
     glTranslatef(13.5, 18.0, 0.0);
     glColor3ub(255, 175, 0); //Orange
     Draw_Beak();
-
     glTranslatef(-65.0, -20.0, 0.0);
     glColor3ub(0, 175, 255);
     Draw_Tail();
-
     glPopMatrix();
 
 

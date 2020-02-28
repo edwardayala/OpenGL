@@ -39,6 +39,8 @@ int timer_period_in_ms = 100; // time between timer callbacks in milliseconds
 // GLOBAL VARIABLES WRITTEN TO BY motionCallBack( )
 //====================================================================
 int bird_r=20;
+int Eye_radius = 20; // For Flappy's eye 
+float Eye_pupil = 10; // For Flappy's pupil
 float bird_x=40; 
 float bird_y=40;; // position of bird
 double bird_vx = 0; 
@@ -57,6 +59,8 @@ double obj_y = 200;
 
 bool hasStarted = false;
 int numUpdates = 0;
+
+int character = 1;
 //======================================================
 // IDLE CALLBACK ROUTINE 
 //======================================================
@@ -194,11 +198,18 @@ void DrawBackground(){
 }
 
 void DrawCollision(){
-  glBegin(GL_QUADS);
-  glVertex2d(w_width / 2 - (w_width / 5), w_height - (w_height / 8));
-  glVertex2d(w_width / 2 - (w_width / 8), w_height - (w_height / 8));
-  glVertex2d(w_width / 2 + (w_width / 5), w_height - (w_height / 2 + w_height / 5));
-  glVertex2d(w_width / 2 + (w_width / 8), w_height - (w_height / 2 + w_height / 5));
+  // glBegin(GL_QUADS);
+  // glVertex2d(w_width / 2 - (w_width / 5), w_height - (w_height / 8));
+  // glVertex2d(w_width / 2 - (w_width / 8), w_height - (w_height / 8));
+  // glVertex2d(w_width / 2 + (w_width / 5), w_height - (w_height / 2 + w_height / 5));
+  // glVertex2d(w_width / 2 + (w_width / 8), w_height - (w_height / 2 + w_height / 5));
+  // glEnd();
+
+  glBegin(GL_POLYGON);
+  glVertex2d(w_width / 2, w_height / 2);
+  glVertex2d((w_width / 2) + 10, w_height / 2);
+  glVertex2d((w_width / 2) + 10, (w_height / 2) - 10);
+  glVertex2d(w_width / 2, (w_height / 2) - 10);
   glEnd();
 }
 
@@ -236,27 +247,27 @@ void update()
     obj_y = (rand())%w_height;
   }
 
-  // Collision Check
-  float r = ((double)rand() / (RAND_MAX));
-	float g = ((double)rand() / (RAND_MAX));
-	float b = ((double)rand() / (RAND_MAX));
+  // Collision Check - Bao Pham
+  // float r = ((double)rand() / (RAND_MAX));
+	// float g = ((double)rand() / (RAND_MAX));
+	// float b = ((double)rand() / (RAND_MAX));
 	
-	if ( ((bird_x >= obj_x - 60) && (bird_x < obj_x)) && (bird_y >= obj_y + 100))
-	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(r, g, b, 1.0);
-		glutSwapBuffers();
-		glutMainLoop();
-	}
+	// if ( ((bird_x >= obj_x - 60) && (bird_x < obj_x)) && (bird_y >= obj_y + 100))
+	// {
+	// 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// 	glClearColor(r, g, b, 1.0);
+	// 	glutSwapBuffers();
+	// 	glutMainLoop();
+	// }
 
-	if (((bird_x >= obj_x - 60) && (bird_x < obj_x)) && (bird_y <= obj_y - 100))
-	{
+	// if (((bird_x >= obj_x - 60) && (bird_x < obj_x)) && (bird_y <= obj_y - 100))
+	// {
 		
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(r, g, b, 1.0);
-		glutSwapBuffers();
-		glutMainLoop();
-	}
+	// 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// 	glClearColor(r, g, b, 1.0);
+	// 	glutSwapBuffers();
+	// 	glutMainLoop();
+	// }
 
   glutPostRedisplay();
 }
@@ -305,19 +316,19 @@ void keyboardCallBack(unsigned char key, int x, int y)
     case 'i':
     case 'I':
       if( !isSimulating ) {
-	isSimulating = !isSimulating;
-	printf("Idle function ON\n");
-	break;
+        isSimulating = !isSimulating;
+        printf("Idle function ON\n");
+        break;
       }
       else {
-	isSimulating = !isSimulating;
-	glutIdleFunc(NULL);
-	printf("Idle function OFF\n");
-	break;
+        isSimulating = !isSimulating;
+        glutIdleFunc(NULL);
+        printf("Idle function OFF\n");
+        break;
       }
-    //case 'r':
+    case 'r':
     //  theta = theta + 10.0;
-    //  break;
+      break;
     case ' ':
       hasStarted = true;
       isSimulating = true;
@@ -333,6 +344,57 @@ void keyboardCallBack(unsigned char key, int x, int y)
 
   glutPostRedisplay();
 }
+
+bool collision = false;
+
+bool checkCollision()
+{
+    if (bird_x >= obj_x - 30 && bird_x <= obj_x + 50)       // If bird is between sides of pipes
+    {
+        if (bird_y <= obj_y - 115 || bird_y >= obj_y + 115) // Then check if bird is above or below the space between pipes 
+            collision = true;                               // Then bird hit a pipe
+    }
+    else collision = false;                                 // Else, no hit
+    return collision;
+}
+
+void DrawPipes()
+{
+  int left = obj_x - 40;
+  int right = obj_x + 40;
+  int top = obj_y + 125;
+  int bottom = obj_y - 125;
+
+  glBegin(GL_QUADS);
+  glVertex2f(left, top);
+  glVertex2f(left, top + w_height);
+  glVertex2f(right, top + w_height);
+  glVertex2f(right, top);
+  glEnd();
+  
+  glBegin(GL_QUADS);
+  glVertex2f(left, bottom);
+  glVertex2f(left, bottom - w_height);
+  glVertex2f(right, bottom - w_height);
+  glVertex2f(right, bottom);
+  glEnd();
+
+  	//Tip
+	glBegin(GL_QUADS);
+  glVertex2f(left - 15, top + 25);
+  glVertex2f(right + 15, top + 25);
+  glVertex2f(right + 15, top);
+  glVertex2f(left - 15, top);
+	glEnd();
+	glBegin(GL_QUADS);
+  glVertex2f(left - 15, bottom + 25);
+  glVertex2f(right + 15, bottom + 25);
+  glVertex2f(right + 15, bottom);
+  glVertex2f(left - 15, bottom);
+	glEnd();
+}
+
+
 //======================================================
 // SHAPES AND OBJECTS 
 //======================================================
@@ -560,6 +622,50 @@ void DrawPipe(float r)
 	glEnd();
 }
 
+void DrawCircle(float r, int num_segments) {
+    float theta = 2 * 3.1415926 / float(num_segments);
+    glBegin(GL_POLYGON);
+    for (int ii = 0; ii < num_segments; ii++) {
+        float xi = r * cos((theta * ii));
+        float yi = r * sin((theta * ii));
+        glVertex2f(xi, yi);
+    }
+    glEnd();
+}
+
+void Draw_Wings() {
+    glBegin(GL_POLYGON);
+    glVertex3f(-20.0, 15.0, 0.0);
+    glVertex3f(20.0, 15.0, 0.0); 
+    glVertex3f(33.0, -30.0, 0.0);
+    glVertex3f(0.0, -35.0, 0.0);
+    glVertex3f(-33.0, -30.0, 0.0);
+    glEnd();
+}
+
+void Draw_Beak() {
+    glBegin(GL_TRIANGLES);
+    glVertex3f(10.0, -30.0, 0.0);
+    glVertex3f(50.0, -30.0, 0.0);
+    glVertex3f(10.0, -10.0, 0.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(10.0, -28.0, 0.0);
+    glVertex3f(40.0, -35.0, 0.0);
+    glVertex3f(10.0, -40.0, 0.0);
+    glEnd();
+}
+
+void Draw_Tail() {
+    glBegin(GL_QUADS);
+    glVertex3f(-40.0, -15.0, 0.0);
+    glVertex3f(-50.0, 0.0, 0.0);
+    glVertex3f(-80.0, -25.0, 0.0);
+    glVertex3f(-50.0, -35.0, 0.0);
+    glEnd();
+}
+
 //======================================================
 // DISPLAY CALL BACK ROUTINE 
 //======================================================
@@ -591,49 +697,83 @@ void displayCallBack(void)
 	glPopMatrix();
 	//end of drawing background
   
-  //draw bird
+  if (character == 1){  
+    // Draw Flappy - Joshua Chi
+    glPushMatrix();
+    glTranslatef(bird_x, bird_y, 0.0);
+    glRotatef(theta, 0, 0, 1.0);
+    glColor3ub(249, 241, 36);
+    DrawEllipse(3, 2, 2.5f, 2, 20);
+    glColor3f(0, 0, 0);
+    DrawBorder(3, 2, 2.5f, 2, 20);
+    glColor3f(1, 1, 1);
+    DrawEye(bird_r, 20);
+    glColor3f(0, 0, 0);
+    DrawPupil();
+    DrawLips();
+    if (bird_y - bird_y0 - 1 > 0.0f)
+    {
+      glRotatef(30, 0, 0, 1);
+      glTranslatef(1, 9, 0);
+      glColor3ub(250, 252, 233);
+      DrawWing(-15, -3, 1.2f, 1.f, 20);
+    }
+    else
+    {
+      glRotatef(-30, 0, 0, 1);
+      glColor3ub(250, 252, 233);
+      DrawWing(-15, -3, 1.2f, 1.f, 20);
+    }
+    glPopMatrix();
+  }
+  else {
+    // Draw Birdy - Jordan Naser (somewhat broken after implementation - but working on its own)
+    glPushMatrix();
+    glTranslatef(bird_x, bird_y, 0.0);
+    glRotatef(theta, 0, 0, 1.0);
+    glColor3ub(0, 200, 255); //Changed to light blue
+    DrawEllipse(7, 4, 7, 4, 40);
+    glTranslatef(30.0, 30.0, 0.0);
+    DrawCircle(bird_r, 30); //Draw head
+    glTranslatef(-30.0, -20.0, 0.0);
+    glColor3ub(0, 175, 255);
+    Draw_Wings(); //Draw Flappy's wings
+    glTranslatef(40.0, 32.0, 0.0);
+    glColor3ub(255, 255, 255); //White
+    DrawCircle(Eye_radius, 20); 
+    glTranslatef(0.0, 1.5, 0.0);
+    glColor3ub(0, 0, 0); //Black
+    DrawCircle(Eye_pupil, 20);
+    glTranslatef(13.5, 18.0, 0.0);
+    glColor3ub(255, 175, 0); //Orange
+    Draw_Beak();
+    glTranslatef(-65.0, -20.0, 0.0);
+    glColor3ub(0, 175, 255);
+    Draw_Tail();
+    glPopMatrix();
+  }
+
+  // Draw pipes - Enkh Onon
+  // glPushMatrix();
+  // glTranslatef(obj_x, obj_y, 0.0);
+  // glColor3f(0, 1, 0);
+  // DrawPipe(bird_r);
+  // glPopMatrix();
+
+  // Draw pipes - Mix of Jacob Puente's & Enkh Onon's Code
   glPushMatrix();
-  glTranslatef(bird_x, bird_y, 0.0);
-  glRotatef(theta, 0, 0, 1.0);
-  
-  glColor3ub(249, 241, 36);
-  DrawEllipse(3, 2, 2.5f, 2, 20);
-
-  glColor3f(0, 0, 0);
-  DrawBorder(3, 2, 2.5f, 2, 20);
-
-  glColor3f(1, 1, 1);
-  DrawEye(bird_r, 20);
-
-  glColor3f(0, 0, 0);
-  DrawPupil();
-
-  DrawLips();
-
-  if (bird_y - bird_y0 - 1 > 0.0f)
-  {
-    glRotatef(30, 0, 0, 1);
-    glTranslatef(1, 9, 0);
-    glColor3ub(250, 252, 233);
-    DrawWing(-15, -3, 1.2f, 1.f, 20);
-  }
-  else
-  {
-    glRotatef(-30, 0, 0, 1);
-    glColor3ub(250, 252, 233);
-    DrawWing(-15, -3, 1.2f, 1.f, 20);
-  }
-
+  if (checkCollision()) glColor3d(1,0,0); 
+  else glColor3f(0, 1, 0);                    // Else, keep them green
+  DrawPipes();
   glPopMatrix();
 
-
-  //draw obj
-  glPushMatrix();
-  glTranslatef(obj_x, obj_y, 0.0);
-  glColor3f(0, 1, 0);
-  // DrawCircle(bird_r,20);
-  DrawPipe(bird_r);
-  glPopMatrix();
+  if (checkCollision()){
+    // glPushMatrix();
+    printf("COLLISION\n");
+    DrawCollision();
+    isSimulating = false;
+    // glPopMatrix();
+  }
 
   //Swap double buffers 
   glutSwapBuffers();
