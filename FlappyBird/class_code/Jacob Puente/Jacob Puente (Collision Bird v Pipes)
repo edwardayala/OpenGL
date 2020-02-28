@@ -29,19 +29,19 @@ void DrawPipes()
     int top = obj_y + 125;
     int bottom = obj_y - 125;
 
-        glBegin(GL_QUADS);
-        glVertex2f(left, top);
-        glVertex2f(left, top + w_height);
-        glVertex2f(right, top + w_height);
-        glVertex2f(right, top);
-        glEnd();
-        
-        glBegin(GL_QUADS);
-        glVertex2f(left, bottom);
-        glVertex2f(left, bottom - w_height);
-        glVertex2f(right, bottom - w_height);
-        glVertex2f(right, bottom);
-        glEnd();
+    glBegin(GL_QUADS);
+    glVertex2f(left, top);
+    glVertex2f(left, top + w_height);
+    glVertex2f(right, top + w_height);
+    glVertex2f(right, top);
+    glEnd();
+    
+    glBegin(GL_QUADS);
+    glVertex2f(left, bottom);
+    glVertex2f(left, bottom - w_height);
+    glVertex2f(right, bottom - w_height);
+    glVertex2f(right, bottom);
+    glEnd();
 }
 
 // within displayCallBack function, I added the code below

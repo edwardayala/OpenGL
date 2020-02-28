@@ -322,7 +322,16 @@ void keyboardCallBack(unsigned char key, int x, int y)
 
   glutPostRedisplay();
 }
+//======================================================
+// SHAPES AND OBJECTS 
+//======================================================
+void DrawCollision(){
+  glBegin(GL_QUADS);
+  glVertex2d(w_width / 2 - (w_width / 5), w_height - (w_height/8));
+  glVertex2d(w_width / 2 - (w_width / 8), w_height - (w_height/8));
+  glVertex2d(w_width / 2 + (w_width / 5), w_height - (w_height/8));
 
+}
 void DrawEllipse(float cx, float cy, float rx, float ry, int num_segments)
 {
   float theta = 2 * 3.1415926 / float(num_segments);

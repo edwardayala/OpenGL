@@ -27,7 +27,7 @@ TO BE IMPLEMENTED:
 * Bao Pham's collision code         -DONE
     * (If background gets added, will use Jacob Puentes' collision code)
 * Enkh Onon's pipes code            -DONE
-* Joshua Chi's flappy bird code     -In Progess
+* Joshua Chi's flappy bird code     -DONE
 * ...
 
 Changes made by me:
