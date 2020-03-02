@@ -1,7 +1,9 @@
+
 #include <stdlib.h>
 #include <math.h>
 
 #ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
@@ -49,7 +51,7 @@ void changeSize(int w, int h) {
   glViewport(0, 0, w, h);
 
   // Set the correct perspective.
-  gluPerspective(45.0f, ratio, 0.1f, 100.0f);
+  gluPerspective(45.0f, ratio, 0.1f, 10000.0f);
 
   // Get Back to the Modelview
   glMatrixMode(GL_MODELVIEW);
@@ -116,15 +118,37 @@ void init() {
   glEnable(GL_NORMALIZE);
 }
 
+// void initPolyhedron() {
+//   //TODO
+  
+//   Polyhedron p1("models/cube.obj", Vector3d(-5,5,0), 50, Vector3d(.3,.5,.3));
+//   p1.Load();
+//   p1.Recenter();
+//   // p1.Print();
+//   polys.push_back(p1);
+  
+// }
+
 void initPolyhedron() {
-  //TODO
-  
-  Polyhedron p1("models/cube.obj", Vector3d(-5,5,0), 0, Vector3d(1,0,0));
-  p1.Load();
-  p1.Recenter();
-  // p1.Print();
-  polys.push_back(p1);
-  
+  for (int i = 0; i < 50; i++)
+  {
+    double randx = (1.0 * (rand() % 100)) - 50;
+    double randy = (1.0 * (rand() % 100)) - 50;
+    double randz = (1.0 * (rand() % 100)) - 50;
+
+    double rotY = rand() % 360;
+
+    double colorx = (1.0 * rand() / RAND_MAX);
+    double colory = (1.0 * rand() / RAND_MAX);
+    double colorz = (1.0 * rand() / RAND_MAX);
+
+    Polyhedron p1("models/cube.obj", Vector3d(randx,randy,randz),rotY, Vector3d(colorx,colory,colorz));
+    p1.Load();
+    p1.Recenter();
+    // p1.Print();
+    polys.push_back(p1);
+  }
+    
 }
 
 void loadFromFile(string filename) {

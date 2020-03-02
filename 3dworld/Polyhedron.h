@@ -13,6 +13,8 @@ public:
   void Recenter();
   void RecenterXZ();
 
+  Vector3d computeNormal(Face);
+
   Vector3d center;
   double rotY;
   Vector3d color;
