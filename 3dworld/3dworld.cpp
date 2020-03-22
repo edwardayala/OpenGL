@@ -129,24 +129,42 @@ void init() {
   
 // }
 
+Vector3d randomPos(){
+  double randx = (1.0 * (rand() % 100)) - 50;
+  double randy = (1.0 * (rand() % 100)) - 50;
+  double randz = (1.0 * (rand() % 100)) - 50;
+  Vector3d randomVals(randx,randy,randz);
+  return randomVals;
+}
+
+double randomRot(){
+  return rand() % 360;
+}
+
+Vector3d randomColor(){
+  double colorx = (1.0 * rand() / RAND_MAX);
+  double colory = (1.0 * rand() / RAND_MAX);
+  double colorz = (1.0 * rand() / RAND_MAX);
+  Vector3d randomVals(colorx,colory,colorz);
+  return randomVals;
+}
+
 void initPolyhedron() {
-  for (int i = 0; i < 50; i++)
-  {
-    double randx = (1.0 * (rand() % 100)) - 50;
-    double randy = (1.0 * (rand() % 100)) - 50;
-    double randz = (1.0 * (rand() % 100)) - 50;
-
-    double rotY = rand() % 360;
-
-    double colorx = (1.0 * rand() / RAND_MAX);
-    double colory = (1.0 * rand() / RAND_MAX);
-    double colorz = (1.0 * rand() / RAND_MAX);
-
-    Polyhedron p1("models/cube.obj", Vector3d(randx,randy,randz),rotY, Vector3d(colorx,colory,colorz));
+  for (int i = 0; i < 50; i++){
+    Polyhedron p1("models/cube.obj", 
+                  Vector3d(randomPos().GetX(),randomPos().GetY(),randomPos().GetZ()),
+                  randomRot(),
+                  Vector3d(randomColor().GetX(),randomColor().GetY(),randomColor().GetZ()));
     p1.Load();
     p1.Recenter();
-    // p1.Print();
     polys.push_back(p1);
+    Polyhedron p2("models/stone2_L.obj", 
+                  Vector3d(randomPos().GetX(),randomPos().GetY(),randomPos().GetZ()),
+                  randomRot(),
+                  Vector3d(randomColor().GetX(),randomColor().GetY(),randomColor().GetZ()));
+    p2.Load();
+    p2.Recenter();
+    polys.push_back(p2);
   }
     
 }

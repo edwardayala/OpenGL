@@ -13,7 +13,10 @@ Polyhedron.o: Polyhedron.cpp
 	g++ -c Polyhedron.cpp -I/usr/X11/include
 
 3dworld: 3dworld.o Basic.o ObjLoader.o Polyhedron.o
-	g++ 3dworld.o Basic.o ObjLoader.o Polyhedron.o -o 3dworld -framework OpenGL -framework GLUT 
+	g++ 3dworld.o Basic.o ObjLoader.o Polyhedron.o -o 3dworld -framework OpenGL -framework GLUT -Wc++11-extensions
 
 clean:
 	rm *.o 3dworld
+
+run:
+	./3dworld

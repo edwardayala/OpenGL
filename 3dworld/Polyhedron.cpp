@@ -29,29 +29,20 @@ Polyhedron::Polyhedron(const Polyhedron& other) {
 
 void Polyhedron::Recenter() {
   //TODO 
-  // double centerX, centerY, centerZ;
+  //Recenter() - adjust the coordinates of the model to be centered about (0,0,0). 
+  //To do this you should first compute the center of the model and then subtract the center from each vertex stored in the model.
+ 
 
-  // for (int i = 0; i < faces.size(); i++)
-  // {
-  //   for (int j = 0; j < faces[i].ids.size(); j++)
-  //   {
-  //     centerX = verts[faces[0].ids[0] - 1].GetX() / 2;
-  //     centerY = verts[faces[1].ids[1] - 1].GetY() / 2;
-  //     centerZ = verts[faces[2].ids[2] - 1].GetZ() / 2;
-  //     cout << "v" << j << " = " << verts[faces[i].ids[j]-1] << endl;
-  //     cout << "center: " << centerX << "," << centerY << "," << centerZ << endl << endl;
-  //   } 
-  // }
-
-  Vector3d com(0,0,0);
+  Vector3d com(0,0,0);  // Initialize com (center of mass)
+  // Fill Vector3d with values from file
   for (auto &i : verts){
     com += i;
   }
-  com /= verts.size();
+  com /= verts.size();  // reduce vector by the size of the shape?
   cout << "-----------------------" << endl;
   cout << "COM:" << com << endl;
   cout << "-----------------------" << endl;
-
+  // recenter each vector
   for (auto &i : verts){
     i -= com;
   }
@@ -59,6 +50,22 @@ void Polyhedron::Recenter() {
 
 void Polyhedron::RecenterXZ() {
   //TODO 
+  // RecenterXZ() - adjust the coordinates of the model to be centered about (0, Y, 0) where Y is 
+  // the original Y center of the model. You can think of this as just adjusting 2D center in the XZ plane.
+  Vector3d com(0,0,0);  // Initialize com (center of mass)
+  // Fill Vector3d with values from file
+  for (auto &i : verts){
+    com += i;
+  }
+  com /= verts.size();  // reduce vector by the size of the shape?
+  cout << "-----------------------" << endl;
+  cout << "COM:" << com << endl;
+  cout << "-----------------------" << endl;
+  // recenter X and Z
+  for (auto &i : verts){
+    i.SetX(i.GetX() - com.GetX());
+    i.SetZ(i.GetZ() - com.GetZ());
+  }
 }
 
 Vector3d Polyhedron::computeNormal(Face f) {
@@ -80,6 +87,12 @@ Vector3d Polyhedron::computeNormal(Face f) {
 
 void Polyhedron::Draw() {
   //TODO 
+  /*
+  Draw - write the draw function in the Polyhedron class to draw each of the faces 
+  (you can assume they are loaded as triangles). This should be a simple loop that 
+  iterates through each of the faces and draws a triangle given three vertices that
+  define the triangle. Be careful with indexing the vertices as OBJ definition start indexing at 1.
+  */
   // cout << "Polyhedron::Draw color = " << color << endl;
   glPushMatrix();
 
