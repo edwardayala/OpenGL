@@ -151,15 +151,15 @@ Vector3d randomColor(){
 
 void initPolyhedron() {
   for (int i = 0; i < 50; i++){
-    Polyhedron p1("models/cube.obj", 
-                  Vector3d(randomPos().GetX(),randomPos().GetY(),randomPos().GetZ()),
+    Polyhedron p1("models/stone1_M.obj", 
+                  Vector3d(randomPos().GetX(),15,randomPos().GetZ()),
                   randomRot(),
                   Vector3d(randomColor().GetX(),randomColor().GetY(),randomColor().GetZ()));
     p1.Load();
     p1.Recenter();
     polys.push_back(p1);
     Polyhedron p2("models/stone2_L.obj", 
-                  Vector3d(randomPos().GetX(),randomPos().GetY(),randomPos().GetZ()),
+                  Vector3d(randomPos().GetX(),10,randomPos().GetZ()),
                   randomRot(),
                   Vector3d(randomColor().GetX(),randomColor().GetY(),randomColor().GetZ()));
     p2.Load();
@@ -202,14 +202,14 @@ void renderScene(void) {
 
   // Draw 36 SnowMen
 
-  if(1)
-  for(int i = -3; i < 3; i++)
-    for(int j=-3; j < 3; j++) {
-      glPushMatrix();
-      glTranslatef(i*10.0,0,j * 10.0);
-      drawSnowMan();
-      glPopMatrix();
-    }
+  // if(1)
+  // for(int i = -3; i < 3; i++)
+  //   for(int j=-3; j < 3; j++) {
+  //     glPushMatrix();
+  //     glTranslatef(i*10.0,0,j * 10.0);
+  //     drawSnowMan();
+  //     glPopMatrix();
+  //   }
 
   for(int i=0; i<(int)polys.size(); i++) {
     polys[i].Draw();
