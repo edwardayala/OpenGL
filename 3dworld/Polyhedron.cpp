@@ -31,8 +31,6 @@ void Polyhedron::Recenter() {
   //TODO 
   //Recenter() - adjust the coordinates of the model to be centered about (0,0,0). 
   //To do this you should first compute the center of the model and then subtract the center from each vertex stored in the model.
- 
-
   Vector3d com(0,0,0);  // Initialize com (center of mass)
   // Fill Vector3d with values from file
   for (auto &i : verts){

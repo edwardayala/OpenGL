@@ -150,16 +150,16 @@ Vector3d randomColor(){
 }
 
 void initPolyhedron() {
-  for (int i = 0; i < 50; i++){
-    Polyhedron p1("models/stone1_M.obj", 
+  for (int i = 0; i < 5; i++){
+    Polyhedron p1("models/stone2_large.obj", 
                   Vector3d(randomPos().GetX(),15,randomPos().GetZ()),
                   randomRot(),
                   Vector3d(randomColor().GetX(),randomColor().GetY(),randomColor().GetZ()));
     p1.Load();
     p1.Recenter();
     polys.push_back(p1);
-    Polyhedron p2("models/stone2_L.obj", 
-                  Vector3d(randomPos().GetX(),10,randomPos().GetZ()),
+    Polyhedron p2("myModels/cat.obj", 
+                  Vector3d(randomPos().GetX(),9,randomPos().GetZ()),
                   randomRot(),
                   Vector3d(randomColor().GetX(),randomColor().GetY(),randomColor().GetZ()));
     p2.Load();
