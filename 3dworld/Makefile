@@ -18,5 +18,8 @@ Polyhedron.o: Polyhedron.cpp
 clean:
 	rm *.o 3dworld
 
+clear:
+	rm *.o
+
 run:
 	./3dworld
