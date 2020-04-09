@@ -1,9 +1,8 @@
 //#include <windows.h>
 //#pragma comment(lib, "user32.lib") 
-
+#define GL_SILENCE_DEPRECATION
 #include "Environment.h"
 #include <fstream>
-
 #include <GL/glut.h>  // (or others, depending on the system in use)
 
 ///////////////////////////////////////////////////////////

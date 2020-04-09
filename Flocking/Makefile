@@ -20,3 +20,9 @@ controllingAgent: controllingAgent.o Simulator.o Agent.o Environment.o Basic.o
 
 clean:
 	rm *.o ca
+
+clear:
+	rm *.o
+
+run:
+	./ca
