@@ -4,7 +4,8 @@
 #include "Agent.h"
 #include "Environment.h"
 #define GL_SILENCE_DEPRECATION
-#include <GL/glut.h>  // (or others, depending on the system in use)
+#include <GL/glut.h> // (or others, depending on the system in use)
+#define DEG2RAD 3.14159 / 180.0
 bool agDebug = false; //true;
 
 extern int drawMode;
@@ -23,9 +24,9 @@ Agent::Agent()
   maxStatus = status;
   isAdversary = false;
   tailLength = 40;
+  lifespan = 5;
 } //empty constructor
-void Agent::Init(int _id, Vector3d _pos, Vector3d _vel, double _mass,
-                 double _maxVel, double _maxAccel, double _viewRadius)
+void Agent::Init(int _id, Vector3d _pos, Vector3d _vel, double _mass, double _maxVel, double _maxAccel, double _viewRadius)
 {
   initialized = true;
   id = _id;
@@ -38,7 +39,7 @@ void Agent::Init(int _id, Vector3d _pos, Vector3d _vel, double _mass,
   //radius = 5;
   radius = 12;
   tailLength = 40;
-
+  lifespan = 5;
   drawForce = true;
   drawVelocity = true;
   drawVR = false;
@@ -77,6 +78,7 @@ Agent::Agent(const Agent &other)
   status = other.status;
   maxStatus = other.maxStatus;
   isAdversary = other.isAdversary;
+  lifespan = other.lifespan;
 }
 
 Vector3d Agent::GetEnvironmentalForce(double mag)
@@ -315,7 +317,7 @@ void Agent::Update(vector<Agent> &agents, double dt)
   bool cdWorld = true;
   if (cdWorld)
   {
-    bool updated = false;
+    bool updated = true;
     Vector3d pNew = gEnv->GetValidPosition(pos, oldPos, radius, vel, updated);
     if (updated)
     {
@@ -386,8 +388,6 @@ void drawCircle(double radius, int divisions, bool filled)
     if (agDebug)
       cout << "curAng= " << curAng << " deltaAng= " << deltaAng << endl;
   }
-  glVertex2f(x + 10, y - 5);
-  glRotated(curAng, x, y, 0);
   glEnd();
 }
 
@@ -428,12 +428,37 @@ void drawTriangleStatus(double length, double percStatus)
   glEnd();
 }
 
+void drawFish(float radiusX, float radiusY, float lifespan)
+{
+  int i;
+
+  glBegin(GL_POLYGON);
+
+  for (i = 0; i < 360; i++)
+  {
+    float rad = i * DEG2RAD;
+    glVertex2f(cos(rad) * radiusX,
+               sin(rad) * radiusY);
+  }
+  glEnd();
+  glColor3d(1,.3,.5);
+  glBegin(GL_POLYGON);
+  glVertex2f(-radiusX,0);
+  glVertex2f(-45,20);
+  glVertex2f(-45,-20);
+  glEnd();
+}
+
 void Agent::Draw()
 {
-  if (!isAdversary)
-    glColor3f(0.2, 0.2, 0.8);
+  if (isAdversary)
+    glColor3f(1.0, 0.0, 0.0);   // adversary (RED)
+  else if (isControlled)
+    glColor3f(0.0, 1.0, 0.0);   // controlled (GREEN)
+  else if (this->lifespan == 0)
+    glColor3f(0.0, 0.0, 0.0);   // dead fish (BLACK)
   else
-    glColor3f(0.4, 0.9, 0.0);
+    glColor3f(0.0, 0.0, 1.0);   // normal (BLUE)
 
   /*
   glPointSize(5);
@@ -446,6 +471,7 @@ void Agent::Draw()
     glPushMatrix();
     glTranslatef(pos.GetX(), pos.GetY(), 0);
     //drawCircle(radius, 10, isControlled);
+    glRotated(radToDeg(ori), 0, 0, 1); // rotate model
     drawAgentAsCircle(radius, 10, isControlled, 1.0 * status / maxStatus);
     glPopMatrix();
   }
@@ -458,7 +484,7 @@ void Agent::Draw()
     drawTriangleStatus(2 * radius, 1.0 * status / maxStatus);
     glPopMatrix();
   }
-  else
+  else if (drawMode == 3)
   {
     glPushMatrix();
     glTranslatef(pos.GetX(), pos.GetY(), 0);
@@ -472,6 +498,27 @@ void Agent::Draw()
       glVertex2f(pastPos[i][0], pastPos[i][1]);
     }
     glEnd();
+  }
+  else if (drawMode == 4)
+  { // DRAW FISH
+    glPushMatrix();
+    glTranslatef(pos.GetX(), pos.GetY(), 0);
+    glRotated(radToDeg(ori), 0, 0, 1); // rotate model
+    drawFish(25, 10, 10);
+    glPopMatrix();
+
+    // moving tail
+    // glBegin(GL_POLYGON);
+    // for (int i = 0; i < (int)pastPos.size(); i++)
+    // {
+    //   glVertex2f(pastPos[i][0], pastPos[i][1]);
+    //   glVertex2f(pastPos[i][0], pastPos[i][1]);
+    //   glVertex2f(pastPos[i][0], pastPos[i][1]);
+    //     // glVertex2f(-radiusX,0);
+    //     // glVertex2f(-45,20);
+    //     // glVertex2f(-45,-20);
+    // }
+    // glEnd();
   }
 
   if (drawForce)
@@ -511,10 +558,14 @@ void Agent::Draw()
 
 void Agent::ResolveCollisionWithOtherAgents(vector<Agent> &agents)
 {
+  Agent self;
   for (int i = 0; i < agents.size(); i++)
   {
     if (id == agents[i].GetID())
+    {
+      self = agents[i];
       continue; //ignore self
+    }
     else
     {
       double dist = (pos - agents[i].GetPos()).norm();
@@ -525,6 +576,12 @@ void Agent::ResolveCollisionWithOtherAgents(vector<Agent> &agents)
         pos += (overlap / 2) * resolveDir;
         Vector3d &pos_i = agents[i].GetPos();
         pos_i += (-overlap / 2) * resolveDir;
+        if (self.isAdversary)
+        {
+          agents[i].separationComponent = 60;
+          agents[i].lifespan--;
+          cout << "LIFESPAN:" << agents[i].lifespan << endl;
+        }
       } //end if dist
     }
   } //endfor i<agents

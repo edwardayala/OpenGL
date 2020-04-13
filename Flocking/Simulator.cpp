@@ -6,32 +6,20 @@
 
 Simulator::Simulator()
 {
-  for (int i = 0; i < 8; i++)
+  clock_t t1, t2;
+  t1 = clock();
+  for (int i = 0; i < 18; i++)
   {
     //pos
     double x = 50 + 200 * (myRand() - 0.5);
     double y = 50 + 200 * (myRand() - 0.5);
     double z = 0;
     AddMember(i, x, y);
-    /*
-    Vector3d pos(x,y,z);
-    //vel
-    double vx = 20*(myRand()-0.5);
-	double vy = 20 * (myRand() - 0.5);
-    double vz = 0;
-    Vector3d vel(vx,vy,vz); 
-	double mass = 4 + myRand() * 10; //random between 4 and 14
-	double maxVel = 8 + myRand() * 5; //random between 18 and 28
-    //double maxAccel = 20+drand48()*10; //random between 20 and 30
-	double maxAccel = 20 + myRand() * 10; //random between 20 and 30
-	double viewRadius = 40 + myRand() * 10; //random between 40 and 50
-    //agents.push_back( Vector3d(x,y) );
-    Agent a_i;
-    a_i.Init(i,pos,vel,mass,maxVel,maxAccel,viewRadius);
-    agents.push_back( a_i );
-    */
   }
   controlAgentIndex = -1;
+  t2 = clock();
+  float diff = ((float)t2-(float)t1);
+  cout << "RUN TIME:" << diff << endl;
 }
 
 void Simulator::AddMember(int index, double x, double y)

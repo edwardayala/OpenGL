@@ -7,8 +7,8 @@
 #include <fstream>
 #include <string>
 #include <math.h>
+#include <time.h>
 using namespace std;
-
 #include "Color.h"
 #include "Vector.h"
 using namespace mathtool;
@@ -42,7 +42,7 @@ bool addIndividual = true;
 bool addGroup = false;
 bool addAttractionPt = false;
 bool addAdversary = false;
-bool addControllable = false;
+bool controlBoid = false;
 
 void init()
 {
@@ -98,34 +98,28 @@ void menu(int num)
     addIndividual = true;
     addGroup = false;
     addAttractionPt = false;
+    controlBoid = false;
   }
   else if (num == 2)
   {
     addIndividual = false;
     addGroup = true;
     addAttractionPt = false;
+    controlBoid = false;
   }
   else if (num == 3)
   {
     addAttractionPt = true;
     addIndividual = false;
     addGroup = false;
+    controlBoid = false;
   }
   else if (num == 4)
   {
     addAttractionPt = false;
     addIndividual = false;
     addGroup = false;
-    addAdversary = true;
-    addControllable = false;
-  }
-  else if (num == 5)
-  {
-    addAttractionPt = false;
-    addIndividual = false;
-    addGroup = false;
-    addAdversary = false;
-    addControllable = true;
+    controlBoid = true;
   }
 }
 
@@ -137,8 +131,7 @@ void createMenu()
   glutAddMenuEntry("Add Indiv.", 1);
   glutAddMenuEntry("Add Group", 2);
   glutAddMenuEntry("Add Attraction Point", 3);
-  glutAddMenuEntry("Add Adversary", 4);
-  glutAddMenuEntry("Add Controllable", 5);
+  glutAddMenuEntry("Toggle control - broken",4);
   glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
@@ -205,9 +198,16 @@ void mousebutton(int button, int state, int x, int y)
     else if (addGroup)
       for (int i = 0; i < 5; i++)
         gSim.AddMember(-1, tx, ty);
-    else if (addAttractionPt)
-    {
+    else if (addAttractionPt) {
       gEnv->AddAttractionPoint(tx, ty);
+    }
+    else if (addAdversary) {
+      gSim.AddMember(-1, tx, ty);
+    }
+    else if (controlBoid){
+      // gSim.AddMember(-1, tx, ty);
+      gSim.IncrementControllingAgent();
+      gSim.ToggleControlledAdversary();
     }
     mousePressed = true;
     glutPostRedisplay();
@@ -314,6 +314,9 @@ void keyboard(unsigned char key, int x, int y)
   case '3':
     drawMode = 3;
     break;
+  case '4':
+    drawMode = 4; // DRAW FISH
+    break;
   case 9: //tab key
     gSim.IncrementControllingAgent();
     break;
@@ -358,7 +361,7 @@ int main(int argc, char **argv)
   init(); //Execute initialization procedure.
   //string fileToLoad = "ConvexConcaveInputs/obj6.txt";
   ///LoadPointXYONLYsFromFile(fileToLoad);
-
+  
   createMenu();
   //glutIdleFunc(drawPointXYONLYs);
   glutIdleFunc(update);
@@ -368,4 +371,5 @@ int main(int argc, char **argv)
   //glutMotionFunc(mouseMove);
   glutSpecialFunc(otherKeyInput);
   glutMainLoop(); //Display everything and wait.
+  
 }

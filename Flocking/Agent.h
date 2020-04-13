@@ -42,11 +42,11 @@ private:
   Vector3d obstacleForce;
   vector<Vector3d> pastPos;
   int tailLength;
-  
+  int lifespan;
   double separationComponent;
   double cohesionComponent;
   double alignmentComponent;
-
+  
   double radius;
   double mass;
   double maxVel;
