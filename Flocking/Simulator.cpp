@@ -8,7 +8,7 @@ Simulator::Simulator()
 {
   clock_t t1, t2;
   t1 = clock();
-  for (int i = 0; i < 18; i++)
+  for (int i = 0; i < 8; i++)
   {
     //pos
     double x = 50 + 200 * (myRand() - 0.5);

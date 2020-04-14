@@ -55,7 +55,7 @@ void init()
   //gluOrtho2D(0.0, windowW, 0.0, windowH);
   gluOrtho2D(-windowW / 2, windowW / 2, -windowH / 2, windowH / 2);
   if (gEnv == NULL)
-    gEnv = new Environment("env.txt", -windowW / 2, windowW / 2, -windowH / 2, windowH / 2);
+    gEnv = new Environment("env3.txt", -windowW / 2, windowW / 2, -windowH / 2, windowH / 2);
 }
 
 void setFollowCamera()
