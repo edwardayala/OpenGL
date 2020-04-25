@@ -217,10 +217,10 @@ Vec3f trace(
 //[/comment]
 void render(const std::vector<Sphere> &spheres)
 {
-    unsigned width = 640, height = 480;
+    unsigned width = 1920, height = 1080; // 640x480 - orig
     Vec3f *image = new Vec3f[width * height], *pixel = image;
     float invWidth = 1 / float(width), invHeight = 1 / float(height);
-    float fov = 30, aspectratio = width / float(height);
+    float fov = 75, aspectratio = width / float(height);
     float angle = tan(M_PI * 0.5 * fov / 180.);
     // Trace rays
     for (unsigned y = 0; y < height; ++y) {
@@ -254,14 +254,229 @@ int main(int argc, char **argv)
     srand48(13);
     std::vector<Sphere> spheres;
     // position, radius, surface color, reflectivity, transparency, emission color
-    spheres.push_back(Sphere(Vec3f( 0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
-    spheres.push_back(Sphere(Vec3f( 0.0,      0, -20),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));
-    spheres.push_back(Sphere(Vec3f( 5.0,     -1, -15),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
-    spheres.push_back(Sphere(Vec3f( 5.0,      0, -25),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));
-    spheres.push_back(Sphere(Vec3f(-5.5,      0, -15),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004,   -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,      0.42, -13.1),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 11.9,     -0.3,  -8.1),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 11.9,      0.9, -31.9),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-12.4,      0.9,  -8.1),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
     // light
     spheres.push_back(Sphere(Vec3f( 0.0,     20, -30),     3, Vec3f(0.00, 0.00, 0.00), 0, 0.0, Vec3f(3)));
     render(spheres);
-    
     return 0;
 }
+
+/*
+1:
+    spheres.push_back(Sphere(Vec3f( 0.0,      -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,           0, -20),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 5.0,          -1, -15),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 5.0,           0, -25),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-5.5,           0, -15),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+2:
+    spheres.push_back(Sphere(Vec3f( 0.0,      -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,         0, -19.7),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 5.3,      -1.3, -14.7),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 5.3,      -0.3, -25.3),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-5.8,      -0.3, -14.7),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+3:
+    spheres.push_back(Sphere(Vec3f( 0.0,      -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,         0, -19.4),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 5.6,      -1.6, -14.4),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 5.6,      -0.6, -25.6),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-6.1,      -0.6, -14.4),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+4:
+    spheres.push_back(Sphere(Vec3f( 0.0,      -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,         0, -19.1),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 5.9,      -1.9, -14.1),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 5.9,      -0.9, -25.9),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-6.4,      -0.9, -14.1),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+5: HITS BOTTOM
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004, -20),   10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,         0, -18.8),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 6.2,      -2.2, -13.8),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 6.2,      -1.2, -26.2),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-6.7,      -1.2, -13.8),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/* START BOUNCE
+6:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004, -20),   10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,         0, -18.5),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 6.5,      -1.9, -13.5),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 6.5,      -0.9, -26.5),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-7.0,      -0.9, -13.5),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+7:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004, -20),   10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,         0, -18.2),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 6.8,      -1.6, -13.2),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 6.8,      -0.6, -26.8),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-7.3,      -0.6, -13.2),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+8:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004, -20),   10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,         0, -17.9),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 7.1,      -1.3, -12.9),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 7.1,      -0.3, -27.1),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-7.6,      -0.3, -12.9),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+9:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004, -20),   10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,         0, -17.6),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 7.4,      -1.0, -12.6),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 7.4,      -0.0, -27.4),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-7.9,      -0.0, -12.6),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+10:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004, -20),   10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,         0, -17.3),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 7.7,      -0.9, -12.3),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 7.7,       0.3, -27.7),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-8.2,       0.3, -12.3),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+11:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004, -20),   10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,         0, -17.0),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 8.0,      -0.6, -12.0),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 8.0,       0.6, -28.0),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-8.5,       0.6, -12.0),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+12: PEAK BOUNCE
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004, -20),   10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,         0, -16.7),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 8.3,      -0.3, -11.7),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 8.3,       0.9, -28.3),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-8.8,       0.9, -11.7),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+13:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004, -20),   10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,         0, -16.4),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 8.6,      -0.6, -11.4),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 8.6,       0.6, -28.6),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-9.1,       0.6, -11.4),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+14:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004, -20),   10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,         0, -16.1),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 8.9,      -0.9, -11.1),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 8.9,       0.3, -28.9),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-9.4,       0.3, -11.1),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+15:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004, -20),   10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,       0.1, -15.8),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 9.2,      -1.2, -10.8),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 9.2,       0.0, -29.2),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-9.7,       0.0, -10.8),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+16:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004, -20),   10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,       0.1, -15.5),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 9.5,      -1.5, -10.5),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 9.5,      -0.3, -29.5),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-10.0,     -0.3, -10.5),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+17:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004, -20),   10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,       0.15, -15.2),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 9.8,      -1.8, -10.2),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 9.8,      -0.6, -29.8),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-10.3,     -0.6, -10.2),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+18: HITS BOTTOM
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004,   -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,     0.169, -14.9),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 10.1,     -2.1,  -9.9),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 10.1,     -0.9, -30.1),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-10.6,     -0.9,  -9.9),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+19: START BOUNCE
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004,   -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,      0.22, -14.6),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 10.4,     -1.8,  -9.6),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 10.4,     -0.6, -30.4),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-10.9,     -0.6,  -9.6),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+20:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004,   -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,      0.26, -14.3),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 10.7,     -1.5,  -9.3),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 10.7,     -0.3, -30.7),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-11.2,     -0.3,  -9.3),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+21:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004,   -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,      0.29, -14.0),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 11.0,     -1.2,  -9.0),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 11.0,     -0.0, -31.0),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-11.5,     -0.0,  -9.0),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+22:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004,   -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,      0.29, -13.7),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 11.3,     -0.9,  -8.7),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 11.3,      0.3, -31.3),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-11.8,      0.3,  -8.7),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+23:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004,   -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,      0.38, -13.4),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 11.6,     -0.6,  -8.4),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 11.6,      0.6, -31.6),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-12.1,      0.6,  -8.4),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
+
+/*
+24:
+    spheres.push_back(Sphere(Vec3f( 0.0,    -10004,   -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));    // HUGE GREY BALL
+    spheres.push_back(Sphere(Vec3f( 0.0,      0.38, -13.1),     4, Vec3f(1.00, 0.32, 0.36), 1, 0.5));    // RED
+    spheres.push_back(Sphere(Vec3f( 11.9,     -0.3,  -8.1),     2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));    // SMALL YELLOW BALL - FAR RIGHT
+    spheres.push_back(Sphere(Vec3f( 11.9,      0.9, -31.9),     3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));    // MEDIUM DARK BLUE BALL
+    spheres.push_back(Sphere(Vec3f(-12.4,      0.9,  -8.1),     3, Vec3f(0.90, 0.90, 0.90), 1, 0.0));    // LARGE DARK GREY BALL - LEFT
+*/
